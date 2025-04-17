@@ -1,0 +1,20 @@
+- name: Deploy simple HTML application
+  hosts: web
+  become: yes
+  tasks:
+    - name: Ensure Nginx is installed
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy index.html to nginx default directory
+      copy:
+        src: ../app/index.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Restart Nginx to apply changes
+      service:
+        name: nginx
+        state: restarted
